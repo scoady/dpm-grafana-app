@@ -1,0 +1,47 @@
+{
+  "type": "app",
+  "name": "DPM Finder App",
+  "id": "dpm-finder",
+  "backend": true,
+  "executable": "dpm-finder",
+  "module": "module.ts",
+  "info": {
+    "description": "Finds high DPM metrics in Prometheus",
+    "author": {
+      "name": "Sean Coady"
+    },
+    "keywords": ["prometheus", "metrics"],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    }
+  },
+  "includes": [
+    {
+      "type": "page",
+      "name": "DPM Finder",
+      "path": "/a/dpm-finder",
+      "role": "Viewer",
+      "defaultNav": true
+    },
+    {
+      "type": "page",
+      "name": "Config",
+      "component": "AppConfig",
+      "role": "Admin"
+    }
+  ],
+  "jsonData": {
+    "fleetBaseURL": "",
+    "datasourceUid": ""
+  },
+  "secureJsonFields": {
+    "fleetAuthToken": false
+  },
+  "dependencies": {
+    "grafanaDependency": "^10.0.0",
+    "plugins": [
+      { "id": "grafana-llm-app", "type": "app" }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+apiVersion: 1
+
+datasources:
+  - name: cloudprom
+    uid: cloudprom
+    type: prometheus
+    url: https://prometheus-prod-36-prod-us-west-0.grafana.net/api/prom ## your prometheus endpoint
+    isDefault: false
+    basicAuth: true
+    basicAuthUser: <YOUR_USER_ID> ## your grafana cloud user id
+    secureJsonData:
+      ## your cloud access policy token 
+      basicAuthPassword: "YOUR_TOKEN"

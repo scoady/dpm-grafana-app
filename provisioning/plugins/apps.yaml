@@ -1,0 +1,24 @@
+apps:
+  - type: 'dpm-finder'
+    org_id: 1
+    org_name: 'YOUR_ORG_NAME'  # <-- must match your Grafana org name
+    disabled: false
+    jsonData:
+      datasourceUid: cloudprom  # <-- must match a real datasource UID that you provision in datasources.yaml
+      fleetBaseURL: https://fleet-management-prod-014.grafana.net/collector.v1.CollectorService ##probably don't need to change this
+    secureJsonData:
+      ## base64 username:password with scopes fleet-management:read
+      fleetAuthToken: "YOUR_BASE64_AUTH_CREDS"
+
+  - type: grafana-llm-app
+    org_id: 1
+    disabled: false
+    jsonData:
+      openAI:
+        provider: openai
+        url: https://api.openai.com/
+        ## your org id in openai platform portal
+        organizationId: YOUR_ORG_ID
+    secureJsonData:
+      ## your openai api key
+      openAIKey: YOUR_API_KEY
