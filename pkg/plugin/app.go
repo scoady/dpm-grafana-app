@@ -1,11 +1,9 @@
 package plugin
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
@@ -65,49 +63,4 @@ func (a *App) CheckHealth(_ context.Context, _ *backend.CheckHealthRequest) (*ba
 		Status:  backend.HealthStatusOk,
 		Message: "ok",
 	}, nil
-}
-
-func (a *App) handleFleetProxy(w http.ResponseWriter, r *http.Request) {
-	const fleetBaseURL = "https://fleet-management-prod-014.grafana.net/collector.v1.CollectorService"
-	const authHeader = "Basic MTA5MzY1NjpnbGNfZXlKdklqb2lNVEkyTnpRME1DSXNJbTRpT2lKemRHRmpheTB4TURrek5qVTJMV1pzWldWMExXMWhibUZuWlcxbGJuUXRZWEJwTFdac1pXVjBiV2R0ZENJc0ltc2lPaUpsVWxsNU5qSnBNalZHYVdjME16ZGtXbFJoY1RZME4wSWlMQ0p0SWpwN0luSWlPaUp3Y205a0xYVnpMWGRsYzNRdE1DSjlmUT09Cg=="
-
-	action := r.URL.Path[len("/proxy-fleet/"):] // e.g., "ListCollectors"
-	if action == "" {
-		http.Error(w, "Missing action", http.StatusBadRequest)
-		return
-	}
-
-	targetURL := fleetBaseURL + "/" + action
-
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, "Failed to read request body", http.StatusInternalServerError)
-		return
-	}
-
-	req, err := http.NewRequestWithContext(r.Context(), "POST", targetURL, bytes.NewBuffer(body))
-	if err != nil {
-		http.Error(w, "Failed to create outbound request", http.StatusInternalServerError)
-		return
-	}
-
-	req.Header.Set("Authorization", authHeader)
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		http.Error(w, "Fleet API request failed", http.StatusBadGateway)
-		return
-	}
-	defer resp.Body.Close()
-
-	respBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		http.Error(w, "Failed to read Fleet API response", http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(resp.StatusCode)
-	_, _ = w.Write(respBody)
 }
