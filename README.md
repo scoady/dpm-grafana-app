@@ -13,4 +13,5 @@
 `provisioning/datasources/datasources.yaml`
 `provisioning/plugins/apps.yaml`
 
-<video controls src="Screen Recording 2025-03-25 at 6.08.15 PM.mov" title="Title"></video>
+## play video 
+<video controls src="./Screen Recording 2025-03-25 at 6.08.15 PM.mov" title="Title"></video>
